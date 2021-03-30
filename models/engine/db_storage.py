@@ -45,15 +45,15 @@ class DBStorage:
         my_dict = {}
         if cls is None:
             for my_class in classes:
-                my_query = self.__session.query(classes[my_class]).all()
+                my_query = self.__session.query(eval(my_class)).all()
                 for obj in my_query:
                     key = obj.__class__.__name__ + '.' + obj.id
-                    my_dict[key] = my_query
+                    my_dict[key] = obj
         else:
-            my_query = self.__session.query(State).all()
+            my_query = self.__session.query(eval(cls)).all()
             for obj in my_query:
                 key = obj.__class__.__name__ + '.' + obj.id
-                my_dict[key] = my_query
+                my_dict[key] = obj
         return my_dict
 
     def new(self, obj):
