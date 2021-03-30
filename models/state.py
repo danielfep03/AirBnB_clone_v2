@@ -14,7 +14,6 @@ class State(BaseModel, Base):
         cities = relationship('City', backref='state', cascade='all, delete')
     else:
         name = ""
-        
 
     def __init__(self, *argv, **kargs):
         """initialization"""

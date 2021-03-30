@@ -50,7 +50,7 @@ class DBStorage:
                     key = obj.__class__.__name__ + '.' + obj.id
                     my_dict[key] = obj
         else:
-            my_query = self.__session.query(eval(cls)).all()
+            my_query = self.__session.query(cls).all()
             for obj in my_query:
                 key = obj.__class__.__name__ + '.' + obj.id
                 my_dict[key] = obj
