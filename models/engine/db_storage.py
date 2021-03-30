@@ -18,12 +18,14 @@ classes = {
     'Review': Review
 }
 
-""" declaration class DBStorage """
+
 class DBStorage:
+    """ declaration class DBStorage """
     __engine = None
     __session = None
 
     def __init__(self):
+        """ declaration class DBStorage """
         HBNB_MYSQL_USER = getenv('HBNB_MYSQL_USER')
         HBNB_MYSQL_PWD = getenv('HBNB_MYSQL_PWD')
         HBNB_MYSQL_HOST = 'localhost'
@@ -45,14 +47,13 @@ class DBStorage:
             for my_class in classes:
                 my_query = self.__session.query(classes[my_class]).all()
                 for obj in my_query:
-                    key = obj.my_query.__class___.__name__ + '.' + obj.id
+                    key = obj.__class__.__name__ + '.' + obj.id
                     my_dict[key] = my_query
         else:
-            for my_class in classes:
-                my_query = self.__session.query(classes[cls]).all()
-                for obj in my_query:
-                    key = obj.my_query.__class___.__name__ + '.' + obj.id
-                    my_dict[key] = my_query
+            my_query = self.__session.query(State).all()
+            for obj in my_query:
+                key = obj.__class__.__name__ + '.' + obj.id
+                my_dict[key] = my_query
 
         return my_dict
 
