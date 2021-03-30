@@ -12,7 +12,7 @@ if getenv("HBNB_TYPE_STORAGE") == "db":
     place_amenity = Table('place_amenity', Base.metadata,
                           Column("place_id", String(60),
                                  ForeignKey('places.id'),
-                                 primary_key=True),
+                                 primary_key=True, nullable=False),
                           Column("amenity_id", String(60),
                                  ForeignKey('amenities.id'),
                                  primary_key=True))
@@ -53,3 +53,19 @@ class Place(BaseModel, Base):
     def __init__(self, *args, **kwargs):
         """initializate class"""
         super().__init__(*args, **kwargs)
+
+        if getenv('HBNB_TYPE_STORAGE') != "db":
+            @property
+            def amenities(self):
+                """Getter amenities """
+                my_list = []
+                for x in list(models.storage.all(amenities).value()):
+                    if x in self.amenity_ids:
+                        my_list.append(x)
+                return my_list
+
+            @amenities.setter
+            def amenities(self, value):
+                """ Set amenities """
+                if type(value) == Amenity:
+                    self.amenity_ids.append(value.id)
