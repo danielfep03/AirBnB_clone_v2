@@ -2,15 +2,17 @@
 """This module defines a class User"""
 from models.base_model import BaseModel
 from sqlalchemy import Column, String
+from sqlalchemy.orm import relationship
 
 
 class User(BaseModel):
     """This class defines a user by various attributes"""
     __tablename__ = 'users'
-    email = Column(string(128), nullable=False)
-    password = Column(string(128), nullable=False)
-    first_name = Column(string(128))
-    last_name = Column(string(128))
+    email = Column(String(128), nullable=False)
+    password = Column(String(128), nullable=False)
+    first_name = Column(String(128))
+    last_name = Column(String(128))
+    places = relationship('Place', backref='user', cascade='all, delete')
 
     def __init__(self, *args, **kwargs):
         """ Initialitation """
