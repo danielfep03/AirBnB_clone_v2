@@ -12,4 +12,5 @@ class State(BaseModel, Base):
     cities = relationship('City', backref='state', cascade='all, delete')
 
     def __init__(self, *argv, **kargs):
+        """initialization"""
         super().__init__(*argv, **kargs)

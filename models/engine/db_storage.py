@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+"""module that contain DBStorage"""
 from models.base_model import BaseModel, Base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -17,7 +18,7 @@ classes = {
     'Review': Review
 }
 
-
+""" declaration class DBStorage """
 class DBStorage:
     __engine = None
     __session = None
@@ -38,7 +39,7 @@ class DBStorage:
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        ''' '''
+        ''' show all class'''
         my_dict = {}
         if cls is None:
             for my_class in classes:
@@ -46,21 +47,30 @@ class DBStorage:
                 for obj in my_query:
                     key = obj.my_query.__class___.__name__ + '.' + obj.id
                     my_dict[key] = my_query
-        
+        else:
+            for my_class in classes:
+                my_query = self.__session.query(classes[cls]).all()
+                for obj in my_query:
+                    key = obj.my_query.__class___.__name__ + '.' + obj.id
+                    my_dict[key] = my_query
+
         return my_dict
 
     def new(self, obj):
+        """new obj add table"""
         self.__session.add(obj)
 
     def save(self):
+        """save obj with commit"""
         self.__session.commit()
 
     def delete(self, obj=None):
+        """ delete node """
         if obj is not None:
             self.__session.delete(obj)
 
     def reload(self):
-
+        """ reload data"""
         Base.metadata.create_all(self.__engine)
         sessionFactory = sessionmaker(bind=self.__engine,
                                       expire_on_commit=False)
