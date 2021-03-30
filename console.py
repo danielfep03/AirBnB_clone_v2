@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+import models
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -121,24 +122,24 @@ class HBNBCommand(cmd.Cmd):
         if not my_class:
             print(" class name missing ")
             return
+        if my_class in self.classes:
+            new_dict = {}
+            for i in range(1, len(my_args)):
+                param = my_args[i].split("=")
+                value = param[1]
+                key = param[0]
+                if value[0] == '"':
+                    value = shlex.split(value)[0].replace('_', ' ')
+                else:
+                    if '.' in value:
+                        value = float(value)
+                    else:
+                        value = int(value)
+                new_dict[key] = value
+            new_instance = HBNBCommand.classes[my_class](**new_dict)
         elif my_class not in HBNBCommand.classes:
             print(" class doesn't exist ")
-            return
-        new_instance = HBNBCommand.classes[my_class]()
-        for i in range(1, len(my_args)):
-            param = my_args[i].split("=")
-            value = param[1]
-            key = param[0]
-            if value[0] == '"':
-                value = shlex.split(value)[0].replace('"', '')
-                if '' in value:
-                    value = shlex.split(value)[0].replace('_', ' ')
-            else:
-                if '.' in value:
-                    value = float(value)
-                else:
-                    value = int(value)
-            setattr(new_instance, key, value)
+            return False
 
         print(new_instance.id)
         storage.save()
@@ -216,21 +217,20 @@ class HBNBCommand(cmd.Cmd):
 
     def do_all(self, args):
         """ Shows all objects, or all objects of a class"""
-        print_list = []
-
-        if args:
-            args = args.split(' ')[0]  # remove possible trailing args
-            if args not in HBNBCommand.classes:
-                print("** class doesn't exist **")
-                return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
+        args = shlex.split(args)
+        obj_list = []
+        if len(args) == 0:
+            obj_dict = models.storage.all()
+        elif args[0] in self.classes:
+            obj_dict = models.storage.all(self.classes[args[0]])
         else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
-
-        print(print_list)
+            print("** class doesn't exist **")
+            return False
+        for key in obj_dict:
+            obj_list.append(str(obj_dict[key]))
+        print("[", end="")
+        print(", ".join(obj_list), end="")
+        print("]")
 
     def help_all(self):
         """ Help information for the all command """

@@ -8,7 +8,7 @@ from models.user import User
 from models.place import Place
 from models.review import Review
 from models.amenity import Amenity
-
+from sqlalchemy.orm import scoped_session
 from os import getenv
 
 classes = {
@@ -32,25 +32,21 @@ class DBStorage:
                                               HBNB_MYSQL_PWD,
                                               HBNB_MYSQL_HOST,
                                               HBNB_MYSQL_DB),
-                                              pool_pre_ping=True)
+                                      pool_pre_ping=True)
 
-        if getenv(HBNB_ENV) == 'test':
+        if getenv('HBNB_ENV') == 'test':
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
         ''' '''
         my_dict = {}
         if cls is None:
-            for my_class in self.classes:
-                my_query = self.__session.query(self.classes[my_class])
+            for my_class in classes:
+                my_query = self.__session.query(classes[my_class]).all()
                 for obj in my_query:
                     key = obj.my_query.__class___.__name__ + '.' + obj.id
                     my_dict[key] = my_query
-        else:
-            my_query = self.__session.query(classes[cls])
-            for my_query in my_query:
-                key = obj.my_query.__class___.__name__ + '.' + obj.id
-                my_dict[key] = my_query
+        
         return my_dict
 
     def new(self, obj):
@@ -59,7 +55,7 @@ class DBStorage:
     def save(self):
         self.__session.commit()
 
-    def delete(self, obj=none):
+    def delete(self, obj=None):
         if obj is not None:
             self.__session.delete(obj)
 
@@ -70,4 +66,3 @@ class DBStorage:
                                       expire_on_commit=False)
         Session = scoped_session(sessionFactory)
         self.__session = Session
-                
