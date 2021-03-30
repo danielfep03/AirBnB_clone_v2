@@ -2,6 +2,8 @@
 """ """
 from tests.test_models.test_base_model import test_basemodel
 from models.place import Place
+from models.base_model import BaseModel, Base
+import unittest
 
 
 class test_Place(test_basemodel):
@@ -67,3 +69,27 @@ class test_Place(test_basemodel):
         """ """
         new = self.value()
         self.assertEqual(type(new.amenity_ids), list)
+
+    class Test_place(unittest.TestCase):
+        """ Test place """
+        def setUp(self):
+            """ Test initialization class"""
+            self.my_place()
+
+        def test_inheritance(self):
+            """ Test inheritance"""
+            self.assertIsInstance(self.my_place(), BaseModel)
+            self.assertIsInstance(self.my_place(), Base)
+
+        def test_attributes(self):
+            """ Test attributes"""
+            self.assertTrue('city_id' in self.my_place.__dir__())
+            self.assertTrue('user_id' in self.my_place.__dir__())
+            self.assertTrue('name' in self.my_place.__dir__())
+            self.assertTrue('description' in self.my_place.__dir__())
+            self.assertTrue('number_rooms' in self.my_place.__dir__())
+            self.assertTrue('number_bathroom' in self.my_place.__dir__())
+            self.assertTrue('max_guest' in self.my_place.__dir__())
+            self.assertTrue('price_by_night' in self.my_place.__dir__())
+            self.assertTrue('latitude' in self.my_place.__dir__())
+            self.assertTrue('longitude' in self.my_place.__dir__())
