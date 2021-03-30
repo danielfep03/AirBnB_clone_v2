@@ -14,4 +14,4 @@ class User(BaseModel):
 
     def __init__(self, *args, **kwargs):
         """ Initialitation """
-        def super().__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
