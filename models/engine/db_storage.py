@@ -50,11 +50,11 @@ class DBStorage:
                     key = obj.__class__.__name__ + '.' + obj.id
                     my_dict[key] = my_query
         else:
-            my_query = self.__session.query(State).all()
-            for obj in my_query:
-                key = obj.__class__.__name__ + '.' + obj.id
-                my_dict[key] = my_query
-
+            pass
+            #            my_query = self.__session.query(State).all()
+            #           for obj in my_query:
+            #              key = obj.__class__.__name__ + '.' + obj.id
+            #             my_dict[key] = my_query
         return my_dict
 
     def new(self, obj):
