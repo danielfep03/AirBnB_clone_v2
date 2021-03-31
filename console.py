@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ Console Module """
 import cmd
+from os import getenv
 import sys
 import models
 from models.base_model import BaseModel
@@ -142,7 +143,11 @@ class HBNBCommand(cmd.Cmd):
             return False
 
         print(new_instance.id)
-        new_instance.save()
+        if getenv('HBNB_TYPE_STORAGE') != "db":
+            models.storage.new(new_instance)
+            models.storage.save()
+        else:
+            new_instance.save()
 
     def help_create(self):
         """ Help information for the create method """
