@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+''' Module that starts a Flask web application '''
 
 from flask import Flask
 
@@ -8,6 +9,7 @@ app.url_map.strict_slashes = False
 
 @app.route("/")
 def main():
+    ''' Main page Content '''
     return "Hello HBNB!"
 
 
