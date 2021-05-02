@@ -42,7 +42,7 @@ def number_route(num):
 @app.route('/number_template/<n>')
 def number_template(n):
     if n.isnumeric():
-        return render_template('index.html', my_num=n)
+        return render_template('5-number.html', my_num=n)
     return abort(404)
 
 
